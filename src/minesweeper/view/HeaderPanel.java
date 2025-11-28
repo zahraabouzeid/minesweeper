@@ -56,6 +56,9 @@ public class HeaderPanel extends JPanel implements GameModel.GameModelObserver {
         int minesLeft = gameModel.getMinesRemaining();
         minesLabel.setText(String.format("%03d", Math.max(0, minesLeft)));
         
+        int elapsedSeconds = gameModel.getElapsedSeconds();
+        timerLabel.setText(String.format("%03d", elapsedSeconds));
+        
         if (gameModel.getState() == GameState.WON) {
             resetButton.setFace(SmileyButton.Face.COOL);
         } else if (gameModel.getState() == GameState.LOST) {

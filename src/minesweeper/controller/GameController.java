@@ -53,14 +53,13 @@ public class GameController {
 
         List<GameCommand> history = commandInvoker.getCommandHistory();
         if (history.isEmpty()) {
-            System.out.println("Replay: History is empty.");
             return;
         }
         
-        System.out.println("Starting Replay with " + history.size() + " commands.");
 
         resetModelForReplay();
         isReplaying = true;
+        gameModel.setReplaying(true);
         
         final int[] commandIndex = {0};
         replayTimer = new Timer(200, new ActionListener() {
@@ -68,14 +67,13 @@ public class GameController {
             public void actionPerformed(ActionEvent e) {
                 if (commandIndex[0] < history.size()) {
                     GameCommand cmd = history.get(commandIndex[0]);
-                    System.out.println("Replay: Executing command " + commandIndex[0]);
                     cmd.execute();
                     commandIndex[0]++;
                 } else {
                     replayTimer.stop();
                     isReplaying = false;
-                    System.out.println("Replay Finished.");
-                    JOptionPane.showMessageDialog(null, "Replay Finished!");
+                    gameModel.setReplaying(false);
+                    // JOptionPane.showMessageDialog(null, "Replay Finished!");
                 }
             }
         });
@@ -91,6 +89,7 @@ public class GameController {
                 gameModel.getBoard().getCell(r, c).setFlagged(false);
             }
         }
+        gameModel.resetTimer();
         gameModel.setState(GameState.PLAYING);
         gameModel.setFlagsPlaced(0);
         gameModel.notifyObservers();

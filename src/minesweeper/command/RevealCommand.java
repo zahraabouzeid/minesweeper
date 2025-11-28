@@ -29,6 +29,8 @@ public class RevealCommand implements GameCommand {
         Board board = gameModel.getBoard();
         board.ensureMinesInitialized(row, col);
         
+        gameModel.startTimer();
+        
         Cell cell = board.getCell(row, col);
         if (cell.isRevealed() || cell.isFlagged()) {
             return;
